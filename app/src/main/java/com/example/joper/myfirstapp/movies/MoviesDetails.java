@@ -30,13 +30,19 @@ public class MoviesDetails extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_movies_details);
 
-//        id = getIntent().getIntExtra("id", -1);
+        id = getIntent().getIntExtra("id", -1);
+
+        /**
+         * Esto seria en caso de usar el request de post
+         * como en el primer request ya se estan obteniendo todos los datos
+         * los vamos a obtener de realm*/
 //        JsonObject jsonObject = new JsonObject();
 //        JsonObject jsonObjectMovie = new JsonObject();
 //        jsonObjectMovie.addProperty("id",id);
 //        jsonObject.add("movie",jsonObjectMovie);
 //        Controller.loadMovieDetailsRetrofit(jsonObject);
 
+        /**Se esta obteniendo el valor con este query de realm*/
         Movies movie = App.getRealm().where(Movies.class).equalTo("movieId", id).findFirst();
 
         detailsMovieImage = (ImageView) findViewById(R.id.imageView_moviedetails_image);
@@ -56,12 +62,6 @@ public class MoviesDetails extends AppCompatActivity {
         detailsMovieCategory.setText("Categoria: \n" + movie.getMovieCategory());
 
 
-      /*  Controller.loadMoviesDetails(id);
-        progressDialog = new ProgressDialog(this);
-        progressDialog.setTitle("Cargando datos de la pelicula");
-        progressDialog.show();
-        */
-
     }
 
     @Override
@@ -75,7 +75,7 @@ public class MoviesDetails extends AppCompatActivity {
         App.getBus().unregister(this);
         super.onPause();
     }
-
+/** Este seria la forma de recibir el evento en caso de estar usando el request de post*/
     @Subscribe
     public void onSuccessDetailsMovie(SuccessMoviesDetails successMoviesDetails){
         progressDialog.dismiss();
